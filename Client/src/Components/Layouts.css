@@ -1,0 +1,23 @@
+.encabezado{
+    display: flex;
+    height: 100px;
+    justify-content: space-between;
+    background-color: rgb(24, 73, 73);
+}
+
+.menu{
+    margin-left: 10px;
+}
+
+.menu a{
+    font-size: 10px;
+    color: aliceblue;
+    text-decoration: none;
+    margin-left: 16px;
+}
+
+.encabezado h1{
+    color: aliceblue;
+    font-size: 30px;
+    margin: 20px;
+}
