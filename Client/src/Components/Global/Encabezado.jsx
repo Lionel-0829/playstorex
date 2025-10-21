@@ -3,9 +3,9 @@ import { GiAbstract023 } from "react-icons/gi";
 import axios from "axios";
 
 function Encabezado() {
-  const [User, setUser] = useState('')
-  const [Password, setPassword] = useState('')
-  const [Name, setName] = useState('')
+  const [Usuario, setUsuario] = useState('')
+  const [Contraseña, setContraseña] = useState('')
+  const [Nombre, setNombre] = useState('')
 
   const [Mensaje, setMensaje] = useState('')
 
@@ -13,15 +13,15 @@ function Encabezado() {
     e.preventDefault();
     setMensaje('')
     try {
-      const Server = await axios.post('http://localhost:3001/registro', {
-        User,
-        Password,
-        Name
+      const Server = await axios.post('http://localhost:3000/api/Registrar', {
+        Usuario,
+        Contraseña,
+        Nombre
       })
       setMensaje(Server.data.Mensaje || 'Registrado')
-      setName('')
-      setUser('')
-      setPassword('')
+      setNombre('')
+      setUsuario('')
+      setContraseña('')
     }
     catch (Error) {
 
@@ -41,14 +41,14 @@ function Encabezado() {
       <form onSubmit={RegistroSubmit}>
         <h1>Registro De Usuario</h1>
 
-  <label htmlFor="">Usuario:</label>
-  <input type="text" name="User" id="User" required value={User} onChange={(e)  => setUser(e.target.value)} />
+        <label htmlFor="">Usuario:</label>
+        <input type="text" name="User" id="Usuario" required value={Usuario} onChange={(e) => setUsuario(e.target.value)} />
 
-  <label htmlFor="">Contraseña:</label>
-  <input type="password" name="Password" id="Password" required value={Password} onChange={(e) => setPassword(e.target.value)} />
+        <label htmlFor="">Contraseña:</label>
+        <input type="password" name="Password" id="Contraseña" required value={Contraseña} onChange={(e) => setContraseña(e.target.value)} />
 
-  <label htmlFor="">Nombre:</label>
-  <input type="text" name="Name" id="Name" required value={Name} onChange={(e) => setName(e.target.value)} />
+        <label htmlFor="">Nombre:</label>
+        <input type="text" name="Name" id="Nombre" required value={Nomb} onChange={(e) => setNombre(e.target.value)} />
 
         <input type="submit" value="Registrar" />
 
