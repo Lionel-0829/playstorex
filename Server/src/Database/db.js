@@ -15,7 +15,7 @@ const db = new SQLite.Database(dbubicacion, (Error) => {
         console.log('Base de datos creada')
         db.run
             (`
-            CREATE TABLE IF NOT EXISTS Usuario(ID INTEGER PRIMARY KEY AUTOINCREMENT,Usuario TEXT UNIQUE, Contraseña TEXT, Email TEXT)
+            CREATE TABLE IF NOT EXISTS Usuario(ID INTEGER PRIMARY KEY AUTOINCREMENT,Usuario TEXT UNIQUE, Contraseña TEXT, Nombre TEXT)
             `), (Error) => {
                 if (Error) {
                     console.log('no se pudo crear la tabla')
