@@ -11,8 +11,9 @@ const EncriptarContraseña=async(Contraseña)=>{
 }
 
 
-const comparePassword=async (Contraseña, parametro)=>{
-     Encriptar.compare(Contraseña,parametro)
+const CompararContraseña=async (Contraseña, parametro)=>{
+    if (!Contraseña || !parametro) return false;
+    return   Encriptar.compare(Contraseña,parametro)
 }
 
-module.exports={EncriptarContraseña, comparePassword}
+module.exports = { EncriptarContraseña, CompararContraseña }
