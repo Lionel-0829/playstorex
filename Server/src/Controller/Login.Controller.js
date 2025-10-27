@@ -16,7 +16,7 @@ const RegistroUsuario = async (req, res) => {
             console.log('Error en la consulata')
             return res.status(500).json({ Error: 'error en server o query' })
         }
-        if (Tabla) {
+        if (!Tabla) {
             console.log('Usuario Existente')
             return res.status(201).json({ Error: 'usuario existente' })
         }
@@ -52,7 +52,7 @@ const Login = async (req, res) => {
             return res.status(500).json({ Error: 'error en server o query' })
         }
 
-        if (Tabla) {
+        if (!Tabla) {
             console.log('Usuario Existente')
             return res.status(401).json({ Error: 'usuario existente' })
         }

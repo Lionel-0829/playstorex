@@ -12,7 +12,7 @@ const db = new SQLite.Database(dbubicacion, (Error) => {
     if (Error) {
         console.log(' Error en :',Error)
     } else {
-        console.log('Base de datos creada')
+        console.log('Base de datos creada o conectada')
         db.run
             (`
             CREATE TABLE IF NOT EXISTS Usuario(ID INTEGER PRIMARY KEY AUTOINCREMENT,Usuario TEXT UNIQUE, Contraseña TEXT, Nombre TEXT)

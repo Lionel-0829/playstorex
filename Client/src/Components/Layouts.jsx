@@ -7,7 +7,6 @@ import './Layouts.css'
 function Layouts() {
   return (
     <>
-      <Encabezado/>
       <Login/>
     </>
   )
