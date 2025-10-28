@@ -4,7 +4,7 @@ const db = require("../Database/db")
 
 
 const RegistroUsuario = async (req, res) => {
-    const { Usuario, Contraseña, Nombre } = req.body;
+    const { Usuario, Contraseña, Nombre, Email } = req.body;
     if (!Usuario || !Contraseña || !Nombre || !Email) {
         console.error('Campos Vacios')
         return res.status(400).json({ Error: 'Campos vacios' })
@@ -23,7 +23,7 @@ const RegistroUsuario = async (req, res) => {
 
     })
     const hash = await EncriptarContraseña(Contraseña)
-    const query2 = 'INSERT INTO Usuario(Usuario,Contraseña,Nombre)VALUES (?,?,?)'
+    const query2 = 'INSERT INTO Usuario(Usuario,Contraseña,Nombre,Email)VALUES (?,?,?)'
     db.run(query2, [Usuario, hash, Nombre, Email], (Error) => {
         if (Error) {
             console.log('Error en la consulata')
@@ -40,8 +40,8 @@ const RegistroUsuario = async (req, res) => {
 }
 
 const Login = async (req, res) => {
-    const { Usuario, Contraseña } = req.body
-    if (!Usuario || !Contraseña) {
+    const { Usuario, Contraseña, Email } = req.body
+    if (!Usuario || !Contraseña ||!Email) {
         return res.status(400).json({ Error: 'Campos vacios' })
     }
 
