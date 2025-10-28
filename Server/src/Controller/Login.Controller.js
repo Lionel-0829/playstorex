@@ -5,12 +5,12 @@ const db = require("../Database/db")
 
 const RegistroUsuario = async (req, res) => {
     const { Usuario, Contraseña, Nombre } = req.body;
-    if (!Usuario || !Contraseña || !Nombre) {
+    if (!Usuario || !Contraseña || !Nombre || !Email) {
         console.error('Campos Vacios')
         return res.status(400).json({ Error: 'Campos vacios' })
     }
     const query = 'SELECT * FROM Usuario WHERE Usuario=?'
-
+        
     db.get(query, [Usuario], (Error, Tabla) => {
         if (Error) {
             console.log('Error en la consulata')
@@ -24,7 +24,7 @@ const RegistroUsuario = async (req, res) => {
     })
     const hash = await EncriptarContraseña(Contraseña)
     const query2 = 'INSERT INTO Usuario(Usuario,Contraseña,Nombre)VALUES (?,?,?)'
-    db.run(query2, [Usuario, hash, Nombre], (Error) => {
+    db.run(query2, [Usuario, hash, Nombre, Email], (Error) => {
         if (Error) {
             console.log('Error en la consulata')
             return res.status(500).json({ Error: 'error en server o query' })
