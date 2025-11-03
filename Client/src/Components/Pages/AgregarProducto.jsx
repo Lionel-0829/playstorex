@@ -6,7 +6,7 @@ function AgregarProducto() {
     <form action="">
         <label htmlFor="">Codigo</label>
         <input type="text" name="" id="" />
-        <label htmlFor="">Nombre</label>
+        <label htmlFor="">Numbre</label>
         <input type="text" name="" id="" />
         <label htmlFor="">Precio</label>
         <input type="number" name="" id="" />
