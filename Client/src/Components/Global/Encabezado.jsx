@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { GiAbstract023 } from "react-icons/gi";
+import { Link } from "react-router-dom";
+
 
 function Encabezado() {
   
@@ -7,11 +9,11 @@ function Encabezado() {
     <>
       <header className="encabezado">
         <h1 > <GiAbstract023 /> </h1>
-        <nav className="menu">
-          <a href="">Login</a>
-          <a href="">Registrar Usuario</a>
-          <a href="">Eliminar Usuario</a>
-        </nav>
+         <nav className="menu">
+                <Link to="/">Home</Link>
+                <Link to="/VerProducto">Ver Productos</Link>
+                <Link to="/AgregarProducto">Agregar Productos </Link>
+            </nav>
       </header>
 
     </>

@@ -1,13 +1,21 @@
 
 import Encabezado from './Global/Encabezado'
-import Registrar from './Registrar'
-import Login from './Login'
-import './Layouts.css' 
+import './Layouts.css'
+import VerProducto from '../Components/Pages/VerProducto'
+import AgregarProducto from '../Components/Pages/AgregarProducto'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function Layouts() {
   return (
     <>
-      <Login/>
+      <Router>
+        <Encabezado />
+        <Routes>
+          <Route path="/VerProducto" element={<VerProducto />} />
+          <Route path="/AgregarProducto" element={<AgregarProducto />} />
+        </Routes>
+      </Router>
+
     </>
   )
 }
