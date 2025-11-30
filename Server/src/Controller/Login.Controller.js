@@ -1,42 +1,35 @@
-const { CompararContraseña, EncriptarContraseña } = require('../Utils/Hash')
-const db = require("../Database/db")
-
+const db = require('../DataBase/db')
+const { GenerarToken } = require('../Utils/Token')
+const { EnviarCorreo } = require('../Utils/EnviarEmails')
+const Encriptar = require('bcryptjs')
 
 
 const RegistroUsuario = async (req, res) => {
-    const { Usuario, Contraseña, Nombre, Email } = req.body;
-    if (!Usuario || !Contraseña || !Nombre || !Email) {
-        console.error('Campos Vacios')
-        return res.status(400).json({ Error: 'Campos vacios' })
+    const { Nombre, Email, Contraseña } = req.body
+    console.log(req.body)
+    if (!Nombre || !Email || !Contraseña) {
+        console.error('Revisar Datos Vacios ⛔')
+        return res.status(401).json({ Error: 'Datos Vacios' })
     }
-    const query = 'SELECT * FROM Usuario WHERE Usuario=?'
-        
-    db.get(query, [Usuario], (Error, Tabla) => {
-        if (Error) {
-            console.log('Error en la consulata')
-            return res.status(500).json({ Error: 'error en server o query' })
-        }
-        if (!Tabla) {
-            console.log('Usuario Existente')
-            return res.status(201).json({ Error: 'usuario existente' })
-        }
-
-    })
-    const hash = await EncriptarContraseña(Contraseña)
-    const query2 = 'INSERT INTO Usuario(Usuario,Contraseña,Nombre,Email)VALUES (?,?,?)'
-    db.run(query2, [Usuario, hash, Nombre, Email], (Error) => {
-        if (Error) {
-            console.log('Error en la consulata')
-            return res.status(500).json({ Error: 'error en server o query' })
-        }
-        else {
-            return res.status(201).json({
-                Mensaje: 'Usuario Registrado',
-                Id: this.lastID,
-                Usuario
+    try {
+        const hash = Encriptar.hashSync(Contraseña, 10)
+        const Token = GenerarToken(Email)
+        query = `INSERT INTO Usuarios(Nombre,Email,Contraseña,Verificacion,TokenEmail)VALUES(?,?,?,?,?)`
+        db.run(query, [Nombre, Email, hash,0,Token], async (Error) => {
+            if (Error) {
+                console.error('Revisar query ⛔', Error.message)
+                return res.status(400).json({ Error: 'El Usuario ya Existe!' })
+            }
+            await EnviarCorreo(Nombre, Email, Token)
+            res.json({
+                message: 'Usuario Registrado Exitosamente , revise su email para terminar el proceso de validacion ⚠'
             })
-        }
-    })
+        })
+
+    }
+    catch (Error) {
+
+    }
 }
 
 const Login = async (req, res) => {
