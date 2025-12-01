@@ -1,0 +1,6 @@
+.home-container{max-width:1000px;margin:28px auto;padding:0 12px}
+.carousel{border-radius:8px;overflow:hidden;background:#f3f3f6}
+.carousel img{width:100%;height:auto;display:block}
+.company-info{margin-top:12px;background:rgba(0,0,0,0.03);padding:12px;border-radius:8px}
+.company-info h1{margin:0 0 6px 0}
+.company-info p{margin:4px 0}

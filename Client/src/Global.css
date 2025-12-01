@@ -1,5 +1,136 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* Variables de color */
+:root {
+  --color-principal: #17153B;
+  --color-secundario: #2E236C;
+  --color-accion: #433D8B;
+  --color-contraste: #C8ACD6;
+  --color-texto: #1a1a1a;
+  --color-fondo-claro: #f5f3f7;
+  --color-bordes: #e0d5ec;
+}
+
+/* Estilos globales */
+html, body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--color-fondo-claro);
+  color: var(--color-texto);
+  line-height: 1.6;
+}
+
+body {
+  background: linear-gradient(135deg, #f5f3f7 0%, #ede9f3 100%);
+  min-height: 100vh;
+}
+
+/* Estilos para inputs y formularios */
+input, textarea, select {
+  font-family: inherit;
+  font-size: 16px;
+  padding: 12px;
+  border: 2px solid var(--color-bordes);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background-color: white;
+  color: var(--color-texto);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-accion);
+  box-shadow: 0 0 0 3px rgba(67, 61, 139, 0.1);
+  background-color: #fafbff;
+}
+
+input::placeholder {
+  color: #999;
+}
+
+/* Estilos para botones */
+button, input[type="submit"] {
+  font-family: inherit;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--color-accion), var(--color-secundario));
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(67, 61, 139, 0.3);
+}
+
+button:hover, input[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(67, 61, 139, 0.4);
+  background: linear-gradient(135deg, var(--color-principal), var(--color-accion));
+}
+
+button:active, input[type="submit"]:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(67, 61, 139, 0.2);
+}
+
+/* Estilos para enlaces */
+a {
+  color: var(--color-accion);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-principal);
+  text-decoration: underline;
+}
+
+/* Estilos para títulos */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-principal);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+h1 { font-size: 36px; }
+h2 { font-size: 28px; }
+h3 { font-size: 24px; }
+h4 { font-size: 20px; }
+h5 { font-size: 18px; }
+h6 { font-size: 16px; }
+
+/* Etiquetas de formularios */
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--color-principal);
+  font-size: 14px;
+}
+
+/* Mensaje de estado */
+.mensaje {
+  padding: 16px;
+  margin-top: 20px;
+  border-radius: 8px;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

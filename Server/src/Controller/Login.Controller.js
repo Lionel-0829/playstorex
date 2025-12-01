@@ -1,68 +1,70 @@
-const db = require('../DataBase/db')
-const { GenerarToken } = require('../Utils/Token')
-const { EnviarCorreo } = require('../Utils/EnviarEmails')
+const db = require('../Database/db')
 const Encriptar = require('bcryptjs')
 
 
 const RegistroUsuario = async (req, res) => {
     const { Nombre, Email, Contraseña } = req.body
-    console.log(req.body)
     if (!Nombre || !Email || !Contraseña) {
-        console.error('Revisar Datos Vacios ⛔')
-        return res.status(401).json({ Error: 'Datos Vacios' })
+        return res.status(401).json({ Error: 'Datos Vacios - revisa que hayas llenado todos los campos' })
     }
     try {
         const hash = Encriptar.hashSync(Contraseña, 10)
-        const Token = GenerarToken(Email)
-        query = `INSERT INTO Usuarios(Nombre,Email,Contraseña,Verificacion,TokenEmail)VALUES(?,?,?,?,?)`
-        db.run(query, [Nombre, Email, hash,0,Token], async (Error) => {
+        query = `INSERT INTO Usuarios(Nombre,Email,Contraseña,is_admin)VALUES(?,?,?,?)`
+        db.run(query, [Nombre, Email, hash, 0], async function (Error) {
             if (Error) {
                 console.error('Revisar query ⛔', Error.message)
                 return res.status(400).json({ Error: 'El Usuario ya Existe!' })
             }
-            await EnviarCorreo(Nombre, Email, Token)
-            res.json({
-                message: 'Usuario Registrado Exitosamente , revise su email para terminar el proceso de validacion ⚠'
+            // Registro de ID insertado
+            try {
+                console.log('Usuario insertado, id:', this.lastID)
+            }
+            catch (e) {
+                console.log('Usuario insertado (no se obtuvo id)')
+            }
+
+            return res.json({
+                message: 'Usuario Registrado Exitosamente'
             })
         })
 
-    }
-    catch (Error) {
-
+    } catch (Error) {
+        console.error('Error en RegistroUsuario:', Error)
+        return res.status(500).json({ Error: 'Error en servidor' })
     }
 }
 
 const Login = async (req, res) => {
-    const { Usuario, Contraseña, Email } = req.body
-    if (!Usuario || !Contraseña ||!Email) {
+    const { Nombre, Contraseña } = req.body
+    if (!Nombre || !Contraseña) {
         return res.status(400).json({ Error: 'Campos vacios' })
     }
 
-    const query = `SELECT * FROM Usuario WHERE Usuario=?`
-    db.get(query, [Usuario], async (Error, Tabla) => {
+    const query = `SELECT * FROM Usuarios WHERE Nombre=?`
+    db.get(query, [Nombre], async (Error, Tabla) => {
         if (Error) {
-            console.error('Error en server')
-            return res.status(500).json({ Error: 'error en server o query' })
+            console.error('Error en servidor', Error)
+            return res.status(500).json({ Error: 'error en servidor o query' })
         }
 
         if (!Tabla) {
-            console.log('Usuario Existente')
-            return res.status(401).json({ Error: 'usuario existente' })
+            console.log('Usuario no encontrado')
+            return res.status(401).json({ Error: 'Usuario no encontrado' })
         }
 
         try {
-            const match = await CompararContraseña(Contraseña, Tabla.Contraseña)
+            const match = Encriptar.compareSync(Contraseña, Tabla.Contraseña)
             if (!match) {
-                return res.status(401).json({ Error: 'credenciales inválidas' })
+                return res.status(401).json({ Error: 'Credenciales inválidas' })
             }
 
             return res.json({
                 Mensaje: 'Bienvenido',
-                Usuario: Tabla.Usuario
+                Nombre: Tabla.Nombre
             })
         } catch (Error) {
             console.error('Error comparando contraseña', Error)
-            return res.status(500).json({ Error: 'error en server' })
+            return res.status(500).json({ Error: 'error en servidor' })
         }
     })
 }

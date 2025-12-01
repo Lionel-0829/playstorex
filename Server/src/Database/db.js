@@ -1,12 +1,12 @@
-// utilizamos la dependencia sqlite3
+// Utilizamos la dependencia sqlite3
 const SQLite = require('sqlite3')
 
-// utilizamos la dependencia path para indicar ubicacion
+// Utilizamos la dependencia path para indicar ubicación
 const path = require('path')
 const Module = require('module')
 
-// indicamos la ubicacion de la base de datos
-const dbubicacion = path.resolve(__dirname, './Sistema.db')
+// Indicamos la ubicación de la base de datos
+const dbUbicacion = path.resolve(__dirname, './Sistema.db')
 
 const db= new SQLite.Database(dbUbicacion, (Error)=>{
     if(Error){
@@ -19,30 +19,37 @@ const db= new SQLite.Database(dbUbicacion, (Error)=>{
             Nombre TEXT NOT NULL,
             Email TEXT NOT NULL UNIQUE,
             Contraseña TEXT NOT NULL,
-            Verificacion INTEGER NOT NULL DEFAULT 0,
-            TokenEmail TEXT
+            is_admin INTEGER NOT NULL DEFAULT 0
         )`, (Error)=>{
             if(Error){
                 console.error('Error al crear la tabla Usuarios: ⛔', Error.message);
             }
             else{
                 console.log('Tabla Usuarios creada o ya existente ✅');
+                // Insertar usuario admin si no existe
+                const Encriptar = require('bcryptjs')
+                const adminHash = Encriptar.hashSync('12345', 10)
+                db.run(`INSERT OR IGNORE INTO Usuarios(Nombre, Email, Contraseña, is_admin) 
+                        VALUES('admin', 'admin@playstorex.com', ?, 1)`, [adminHash], (err) => {
+                    if (!err) console.log('Usuario admin verificado ✅')
+                })
             }
         });
-        db.run
-            (`
-            CREATE TABLE IF NOT EXISTS Productos
-            (Codigo INTEGER PRIMARY KEY AUTOINCREMENT,
-            Nombre TEXT, Precio INTEGER, Cantidad INTEGER, 
+        db.run(`CREATE TABLE IF NOT EXISTS Productos(
+            Codigo INTEGER PRIMARY KEY AUTOINCREMENT,
+            Nombre TEXT NOT NULL, 
+            Precio INTEGER NOT NULL, 
+            Cantidad INTEGER NOT NULL, 
             Descripcion TEXT, 
-            Categoria TEXT
-            )`, (Error) => {
-                if (Error) {
-                    console.log('no se pudo crear la tabla')
-                } else {
-                    console.log('tabla creada')
-                }
-            })
+            Categoria TEXT,
+            Imagen TEXT
+        )`, (Error) => {
+            if (Error) {
+                console.error('Error al crear tabla Productos:', Error.message)
+            } else {
+                console.log('Tabla Productos creada o ya existente ✅')
+            }
+        })
     }
 })
 
